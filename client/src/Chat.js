@@ -15,6 +15,8 @@ const Chat = ({ socket, username, room }) => {
       };
 
       await socket.emit("send_message", messageData);
+      setmessageList((prevList)=>[...prevList, messageData]);
+
     }
   };
   useEffect(() => {
