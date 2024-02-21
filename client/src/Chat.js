@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 const Chat = ({ socket, username, room }) => {
   const [currentmessage, setcurrentmessage] = useState("");
+  const [messageList, setmessageList] = useState([]);
+
   const sendMessage = async () => {
     if (currentmessage !== "") {
       const messageData = {
@@ -17,15 +19,19 @@ const Chat = ({ socket, username, room }) => {
   };
   useEffect(() => {
     socket.on("receive_message", (data)=>{
-        console.log(data);
+        setmessageList((prevList)=>[...prevList, data]);
     })
   }, [socket]);
   return (
-    <div>
+    <div className="chat-window">
       <div className="chat-header">
         <p>Live chat</p>
       </div>
-      <div className="chat-body"></div>
+      <div className="chat-body">
+        {messageList.map((messageData)=>{
+            return <h3>{messageData.message}</h3>
+        })}
+      </div>
       <div className="chat-footer">
         <input
           type="text"
